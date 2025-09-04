@@ -173,6 +173,7 @@ exports.sendotp = async (req, res) => {
         });
 
     } catch (error) {
+        console.log(error.message);
         console.error("Error sending OTP:", error.message);
         res.status(500).json({
             success: false,
