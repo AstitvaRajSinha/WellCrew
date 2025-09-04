@@ -18,7 +18,7 @@ const CommunityGroup = () => {
   const fetchUserData = useCallback(async (senderId) => {
     if (userCache[senderId]) return userCache[senderId];
     try {
-      const response = await axios.post(`http://localhost:3000/auth/user`, { userId: senderId }, { withCredentials: true });
+      const response = await axios.post(`https://wellcrew.onrender.com/auth/user`, { userId: senderId }, { withCredentials: true });
       const userName = response.data.user.name;
       setUserCache((prevCache) => ({ ...prevCache, [senderId]: userName }));
       return userName;
@@ -32,8 +32,8 @@ const CommunityGroup = () => {
     const fetchUserAndGroup = async () => {
       try {
         socket.emit('joinCommunityGroup', { communityId });
-        const userResponse = await axios.get(`http://localhost:3000/auth/profile`, { withCredentials: true });
-        const groupResponse = await axios.get(`http://localhost:3000/community/${communityId}/group`);
+        const userResponse = await axios.get(`https://wellcrew.onrender.com/auth/profile`, { withCredentials: true });
+        const groupResponse = await axios.get(`https://wellcrew.onrender.com/community/${communityId}/group`);
         setUser(userResponse.data.user);
         const allMessages = groupResponse.data.data || [];
         const enrichedMessages = await Promise.all(allMessages.map(async (msg) => ({ ...msg, senderName: await fetchUserData(msg.senderId) })));
@@ -78,7 +78,7 @@ const handleSendMessage = async () => {
     ]);
 
     await axios.post(
-      `http://localhost:3000/community/${communityId}/group`,
+      `https://wellcrew.onrender.com/community/${communityId}/group`,
       messageData
     );
 
@@ -100,7 +100,7 @@ const handleSendMessage = async () => {
   useEffect(() => {
     const fetchCommunityName = async () => {
       try {
-        const response = await axios.post(`http://localhost:3000/community/${communityId}`, { communityId });
+        const response = await axios.post(`https://wellcrew.onrender.com/community/${communityId}`, { communityId });
         setCommunityName(response.data.data.name);
       } catch (error) {
         console.error('Error fetching community name:', error);

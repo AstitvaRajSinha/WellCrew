@@ -52,7 +52,7 @@ const Chat = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/auth/profile", {
+        const res = await axios.get("https://wellcrew.onrender.com/api/auth/profile", {
           withCredentials: true,
         });
         setUser(res.data.user);
@@ -67,7 +67,7 @@ const Chat = () => {
     const fetchChats = async (id) => {
       try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:3000/chat/${id}`, {
+        const res = await axios.get(`https://wellcrew.onrender.com/chat/${id}`, {
           withCredentials: true,
         });
         setChats(res.data || []);

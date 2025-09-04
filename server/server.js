@@ -44,11 +44,12 @@ app.use("/message", require("./routes/message"));
 app.use("/community", require("./routes/community"));
 
 // Serve React build
-app.use(express.static(path.join(_dirname, "/client/build")));
+app.use(express.static(path.join(_dirname, "../client/build")));
 
-app.get("*", (_, res) => {
-  res.sendFile(path.resolve(_dirname, "client", "build", "index.html"));
+app.get('*', (_, res) => {
+    res.sendFile(path.resolve(_dirname, "../client/build", "index.html"));
 });
+
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {

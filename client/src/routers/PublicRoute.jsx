@@ -10,7 +10,7 @@ const PublicRoute = ({ children }) => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/auth/verify-token', {
+                const response = await axios.get('https://wellcrew.onrender.com/api/auth/verify-token', {
                     withCredentials: true,
                 });
 
