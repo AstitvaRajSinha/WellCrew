@@ -44,7 +44,7 @@ function Login() {
     };
 
 
-    const messageColor = message === "Logged in successfully" ? 'green' : 'red';
+    const messageColor = message === "Logged in successfully" ? '#6F00FF' : 'red';
 
     return (
         <div>

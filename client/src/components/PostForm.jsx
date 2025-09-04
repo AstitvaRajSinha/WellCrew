@@ -79,7 +79,7 @@ function PostForm() {
           style={{ width: '60px', height: '60px' }}
         >
           <TbCirclePlus
-            fill="green"
+            fill="#6F00FF"
             stroke="black"
             className="w-full h-full"
             style={{ width: '60px', height: '60px' }}
@@ -147,7 +147,7 @@ function PostForm() {
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
-                  stroke="green"
+                  stroke="#6F00FF"
                   className="w-6 h-6"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />

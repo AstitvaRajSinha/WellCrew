@@ -4,7 +4,7 @@ export default function PopularCard() {
     return (
         <>
         <div className='p-4'>
-            <button className="relative w-full md:w-[310px] h-[150px] bg-gradient-to-t from-[#075504] via-[#0d8007] to-[#29a623] text-white rounded-2xl border-none outline-none cursor-pointer overflow-hidden shadow-[0_15px_30px_rgba(0,0,0,0.5)] group">
+            <button className="relative w-full md:w-[310px] h-[150px] bg-gradient-to-t from-[#7F00FF] via-[#6C63FF] to-[#E100FF] text-white rounded-2xl border-none outline-none cursor-pointer overflow-hidden shadow-[0_15px_30px_rgba(0,0,0,0.5)] group">
                 <div className="absolute w-full left-0 top-1/2 transform -translate-y-1/2 text-[12px] uppercase tracking-wider transition-all duration-500 group-hover:-top-full">
                     <div className='text-left p-4'>
                         <h2 className='text-lg font-bold '>FitLife Hub</h2>

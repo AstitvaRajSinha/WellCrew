@@ -47,7 +47,7 @@ function Otp() {
         }
     };
 
-    const messageColor = message === "OTP sent successfully" ? 'green' : 'red';
+    const messageColor = message === "OTP sent successfully" ? '#6F00FF' : 'red';
 
     return (
         <div className='bg-black min-h-screen'>

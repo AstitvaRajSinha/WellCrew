@@ -57,7 +57,7 @@ const UserProfile = () => {
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
-                  stroke="green"
+                  stroke="#6F00FF"
                   className="size-8"
                 >
                   <path

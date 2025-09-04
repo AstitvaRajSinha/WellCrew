@@ -32,7 +32,7 @@ const ProtectedRoute = ({ children }) => {
 
     if (loading) return <div><div className="flex justify-center mt-20">
     <ClipLoader
-      color={'#0d8007'}
+      color={'#6C63FF'}
       loading={loading}
       size={100}
       aria-label="Loading Spinner"

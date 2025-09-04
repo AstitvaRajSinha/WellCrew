@@ -85,7 +85,7 @@ const Blog = ({ post, currentUser }) => {
         {isExpert && (
           <span className="bg-primary-100 text-primary-800 text-xs font-medium inline-flex items-center rounded dark:bg-primary-200 dark:text-primary-800">
             <div className="flex space-x-1">
-              <span className="text-green">{post.name.role}</span>
+              <span className="text-green">{post.name.role} ✨</span>
             </div>
           </span>
         )}

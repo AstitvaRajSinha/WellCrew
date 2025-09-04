@@ -54,7 +54,7 @@ function Home() {
                 </button>
                 <button onClick={handlesignup} className="relative overflow-hidden h-12 px-8 rounded-md border-2  border-green text-gray-200   cursor-pointer group">
                   <span className="relative z-10">Sign Up</span>
-                  <span className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#075504] to-[#29a623] scale-x-0 group-hover:scale-x-100 transition-transform duration-[300ms] ease-in-out origin-left rounded-md"></span>
+                  <span className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#6C63FF] to-[#6F00FF] scale-x-0 group-hover:scale-x-100 transition-transform duration-[300ms] ease-in-out origin-left rounded-md"></span>
                 </button>
               </div>
             </div>

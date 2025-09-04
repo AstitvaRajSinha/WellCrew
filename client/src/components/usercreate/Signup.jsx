@@ -55,7 +55,7 @@ function Signup() {
         }
     };
 
-    const messageColor = message === "User created successfully" ? 'green' : 'red';
+    const messageColor = message === "User created successfully" ? '#6F00FF' : 'red';
 
     return (
         <div className='bg-black min-h-screen'>
