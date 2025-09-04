@@ -101,17 +101,17 @@ exports.getUserCommunities = async (req, res) => {
         .populate("creator", "name email") ; // Populate `members` with specific fields
   
       // Check if communities are found
-      if (!userCommunities.length) {
-        return res.status(404).json({
-          success: false,
-          message: "No communities found for the specified user.",
-        });
-      }
+    //   if (!userCommunities.length) {
+    //     return res.status(404).json({
+    //       success: false,
+    //       message: "No communities found for the specified user.",
+    //     });
+    //   }
       res.status(200).json({
         success: true,
         communities: userCommunities,
       });
-      console.log("userCommunitty", userCommunities);
+      // console.log("userCommunitty", userCommunities);
     } catch (error) {
       console.error("Error fetching user communities:", error.message);
       res.status(500).json({
@@ -201,6 +201,7 @@ exports.getGroupMessages = async (req, res) => {
 
       // Fetch all messages for the community
       const messages = await GroupChatModel.find({ communityId }).sort({ createdAt: 1 });
+      // console.log('Fetched messages:', messages); // Debugging line
 
       res.status(200).json({ success: true, data: messages });
   } catch (error) {
@@ -209,6 +210,30 @@ exports.getGroupMessages = async (req, res) => {
   }
 };
 
+
+
+  exports.getCommunityWithMembers = async (req, res) => {
+    try {
+      const communityId = req.params.communityId;
+      
+      // Find the community and populate members
+      const community = await Community.findById(communityId)
+        .populate('members', 'name email')  // Populate the members with their name and email
+        .populate('creator', 'name email')  // Optionally, populate the creator details
+        .exec();
+  
+      if (!community) {
+        return res.status(404).json({ success: false, message: 'Community not found' });
+      }
+  
+      res.status(200).json({ success: true, community });
+    } catch (error) {
+      res.status(500).json({ success: false, error: error.message });
+    }
+  };
+  
+
+  
 exports.getCommunityById =  async (req, res) => {
     const { communityId } = req.body;
 
@@ -236,26 +261,3 @@ exports.getCommunityById =  async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 }
-
-
-
-  exports.getCommunityWithMembers = async (req, res) => {
-    try {
-      const communityId = req.params.communityId;
-      
-      // Find the community and populate members
-      const community = await Community.findById(communityId)
-        .populate('members', 'name email')  // Populate the members with their name and email
-        .populate('creator', 'name email')  // Optionally, populate the creator details
-        .exec();
-  
-      if (!community) {
-        return res.status(404).json({ success: false, message: 'Community not found' });
-      }
-  
-      res.status(200).json({ success: true, community });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
-    }
-  };
-  

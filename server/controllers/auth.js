@@ -10,6 +10,13 @@ exports.signup = async (req, res) => {
     try {
         const { name, email, password, role, otp } = req.body;
 
+        if (!isNaN(name)) {
+            return res.status(400).json({
+                success: false,
+                message: "Name cannot be a number",
+            });
+        }
+
         if (!name || !email || !password || !otp) {
             return res.status(403).send({
                 success: false,
@@ -32,8 +39,11 @@ exports.signup = async (req, res) => {
                 message: "The OTP is not valid",
             });
         }
-        const image = `https://ui-avatars.com/api/?background=0d8007&color=fff&name=${name}`;
+
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        const hex = Math.floor(Math.random() * 16777215).toString(16);
+        const image = `https://ui-avatars.com/api/?background=${hex}&color=fff&name=${name}`;
 
         const newUser = await User.create({
             name, email, password: hashedPassword, role, image
@@ -80,19 +90,19 @@ exports.login = async (req, res) => {
         };
 
         if (await bcrypt.compare(password, user.password)) {
-            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "3h" });
             const options = {
-                expires: new Date(Date.now() +  60 * 60 * 1000), 
+                expires: new Date(Date.now() + 3 * 60 * 60 * 1000),
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production', 
+                secure: process.env.NODE_ENV === 'production',
             };
-            
+
             res.cookie('jwtToken', token, options).status(200).json({
                 success: true,
                 User: user,
                 message: "Logged in successfully"
             });
-            
+
         } else {
             return res.status(403).json({
                 success: false,
@@ -108,12 +118,78 @@ exports.login = async (req, res) => {
     }
 };
 
+
+
+// Send OTP handler
+exports.sendotp = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        // Check if the user is already registered
+        const checkUserPresent = await User.findOne({ email });
+        if (checkUserPresent) {
+            return res.status(401).json({
+                success: false,
+                message: "User is already registered",
+            });
+        }
+
+        // Generate a new OTP
+        let otp = otpGenerator.generate(6, {
+            upperCaseAlphabets: false,
+            lowerCaseAlphabets: false,
+            specialChars: false,
+        });
+
+        // Ensure OTP is unique in the database
+        let result = await OTP.findOne({ otp });
+        while (result) {
+            otp = otpGenerator.generate(6, {
+                upperCaseAlphabets: false,
+                lowerCaseAlphabets: false,
+                specialChars: false,
+            });
+            result = await OTP.findOne({ otp });
+        }
+
+        // Delete any existing OTP for the same email
+        await OTP.deleteMany({ email });
+
+        // Save the new OTP to the database
+        const otpPayload = { email, otp };
+        await OTP.create(otpPayload);
+
+        res.status(200).json({
+            success: true,
+            message: "OTP sent successfully",
+            otp, // In production, this should not be sent in the response for security reasons
+        });
+
+    } catch (error) {
+        console.error("Error sending OTP:", error.message);
+        res.status(500).json({
+            success: false,
+            message: "Try again",
+        });
+    }
+};
+
+
+
+exports.logout = (req, res) => {
+    res.cookie('jwtToken', '', {
+        httpOnly: true,
+        expires: new Date(Date.now() - 1),
+        secure: process.env.NODE_ENV === 'production'
+    });
+    res.status(200).json({ success: true, message: 'Logged out successfully' });
+};
+
+
 exports.getUserById = async (req, res) => {
     try {
-        // Extract userId from request body
         const { userId } = req.body;
 
-        // Validate the request
         if (!userId) {
             return res.status(400).json({
                 success: false,
@@ -121,10 +197,8 @@ exports.getUserById = async (req, res) => {
             });
         }
 
-        // Find the user in the database
         const user = await User.findById(userId);
 
-        // Check if user exists
         if (!user) {
             return res.status(404).json({
                 success: false,
@@ -132,7 +206,6 @@ exports.getUserById = async (req, res) => {
             });
         }
 
-        // Send back user data
         res.status(200).json({
             success: true,
             user,
@@ -144,60 +217,4 @@ exports.getUserById = async (req, res) => {
             message: "An error occurred while fetching user data",
         });
     }
-};
-
-
-// Send OTP handler
-exports.sendotp = async (req, res) => {
-    try {
-        const { email } = req.body;
-
-        const checkUserPresent = await User.findOne({ email });
-        if (checkUserPresent) {
-            return res.status(401).json({
-                success: false,
-                message: "User is Already Registered",
-            });
-        }
-
-        let otp = otpGenerator.generate(6, {
-            upperCaseAlphabets: false,
-            lowerCaseAlphabets: false,
-            specialChars: false,
-        });
-
-        let result = await OTP.findOne({ otp });
-        while (result) {
-            otp = otpGenerator.generate(6, {
-                upperCaseAlphabets: false,
-            });
-            result = await OTP.findOne({ otp });
-        }
-
-        const otpPayload = { email, otp };
-        await OTP.create(otpPayload);
-
-        res.status(200).json({
-            success: true,
-            message: "OTP Sent Successfully",
-            otp,
-        });
-        
-    } catch (error) {
-        console.log(error.message);
-        return res.status(500).json({ success: false, error: error.message });
-    }
-};
-
-// Admin dashboard: View communities created and their member counts
-
-
-
-exports.logout = (req, res) => {
-    res.cookie('jwtToken', '', {
-        httpOnly: true,
-        expires: new Date(Date.now() - 1), 
-        secure: process.env.NODE_ENV === 'production' 
-    });
-    res.status(200).json({ success: true, message: 'Logged out successfully' });
 };

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CreateCommunity = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [user, setUser] = useState(null);
+
+  const navigate = useNavigate();
 
   // Fetch user details on component mount
   useEffect(() => {
@@ -15,10 +18,10 @@ const CreateCommunity = () => {
           withCredentials: true,
         });
 
-        console.log("API response:", response.data); // Debugging: log the full response
+        // console.log("API response:", response.data); // Debugging: log the full response
         if (response.data && response.data.user.email) {
           setUser(response.data.user);
-          console.log("User data fetched:", response.data.user._id);
+          // console.log("User data fetched:", response.data.user._id);
         } else {
           console.error("Error fetching user data:", response.data.message);
         }
@@ -50,8 +53,9 @@ const CreateCommunity = () => {
         category,
         userId: user._id,
       });
-      console.log(response.data);
+      // console.log(response.data);
       alert(response.data.message);
+      navigate('/community');
     } catch (error) {
       console.error("Error creating community:", error.response?.data || error.message);
       alert(error.response?.data?.message || "Something went wrong!");
@@ -60,12 +64,12 @@ const CreateCommunity = () => {
 
   return (
     <form
-      className="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-md"
+      className="flex flex-col gap-4 bg-transparent p-6 rounded-lg shadow-md max-w-md mx-auto"
       onSubmit={handleSubmit}
     >
-      <h2 className="text-xl font-bold">Create a Community</h2>
+      <h2 className="text-xl text-green font-bold">Create a Community</h2>
       <input
-        className="p-2 border rounded text-black"
+        className="p-2 border rounded text-white bg-transparent"
         type="text"
         placeholder="Community Name"
         value={name}
@@ -73,14 +77,14 @@ const CreateCommunity = () => {
         required
       />
       <textarea
-        className="p-2 border rounded text-black"
+        className="p-2 border rounded text-white  bg-transparent"
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         required
       />
       <input
-        className="p-2 border rounded text-black"
+        className="p-2 border rounded text-white  bg-transparent"
         type="text"
         placeholder="Category"
         value={category}
@@ -89,7 +93,7 @@ const CreateCommunity = () => {
       />
       <button
         type="submit"
-        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+        className="bg-green text-white p-2 rounded hover:bg-green"
       >
         Create Community
       </button>

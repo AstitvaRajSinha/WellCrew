@@ -5,62 +5,25 @@ const User = require('../models/user');
 // const jwt = require('jsonwebtoken');
 // const User = require('../models/user');
 
-// exports.auth = async (req, res, next) => {
-//     try {
-//         const token = req.cookies.jwtToken || req.headers['authorization'];
-//         if (!token) return res.status(401).json({ success: false, message: 'No token provided' });
-
-//         jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-//             if (err) return res.status(401).json({ success: false, message: 'Invalid token' });
-
-//             const user = await User.findById(decoded.id);
-//             if (!user) return res.status(404).json({ success: false, message: 'User not found' });
-
-//             req.user = user;
-//             next();
-//         });
-//     } catch (error) {
-//         console.error("Authentication error:", error);
-//         res.status(500).json({ success: false, message: 'Authentication error' });
-//     }
-// };
-
-
 exports.auth = async (req, res, next) => {
     try {
-        // console.log("Cookies in Request:", req.cookies); // Log all cookies
-        // console.log("Authorization Header:", req.headers['authorization']); // Log Authorization header
-        
-        const token = req.cookies.jwtToken || 
-                      (req.headers['authorization'] && req.headers['authorization'].split(' ')[1]); // Extract Bearer token
-
-        // console.log("Extracted Token:", token); // Log the extracted token
-
-        if (!token) {
-            return res.status(401).json({ success: false, message: 'No token provided' });
-        }
+        const token = req.cookies.jwtToken || req.headers['authorization'];
+        if (!token) return res.status(401).json({ success: false, message: 'No token provided' });
 
         jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-            if (err) {
-                console.error("JWT Verification Error:", err);
-                return res.status(401).json({ success: false, message: 'Invalid token' });
-            }
+            if (err) return res.status(401).json({ success: false, message: 'Invalid token' });
 
             const user = await User.findById(decoded.id);
-            if (!user) {
-                return res.status(404).json({ success: false, message: 'User not found' });
-            }
+            if (!user) return res.status(404).json({ success: false, message: 'User not found' });
 
             req.user = user;
             next();
         });
     } catch (error) {
-        console.error("Authentication Middleware Error:", error);
+        console.error("Authentication error:", error);
         res.status(500).json({ success: false, message: 'Authentication error' });
     }
 };
-
-
 
 
 
@@ -117,3 +80,5 @@ exports.verifyToken = (req, res) => {
 //         });
 //     }
 // }
+
+

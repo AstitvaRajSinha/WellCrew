@@ -1,59 +1,99 @@
+// socket/index.js
 const { Server } = require("socket.io");
 
 function initializeSocket(server) {
-  const io = new Server(8800, {
+  const io = new Server(server, {
     cors: {
-      origin: "http://localhost:3001",
+      origin: "http://localhost:3001", // your React client
+      credentials: true,
+      methods: ["GET", "POST"],
     },
   });
 
-  let activeUsers = [];
+  // Track online users as a Map<userId, countOfSockets>
+  const onlineCounts = new Map();
+
+  const broadcastOnlineUsers = () => {
+    // Just share userIds; expand structure if you need more fields
+    const users = Array.from(onlineCounts.keys()).map((userId) => ({ userId }));
+    io.emit("get-users", users);
+  };
 
   io.on("connection", (socket) => {
-    console.log(`New user connected: ${socket.id}`);
+    console.log(`✅ New socket connected: ${socket.id}`);
 
-    // Event: Add a new user
-    socket.on("new-user-add", (newUserId) => {
-      if (!activeUsers.some((user) => user.userId === newUserId)) {
-        activeUsers.push({ userId: newUserId, socketId: socket.id });
-      }
-      console.log("Active Users: ", activeUsers);
-      io.emit("get-users", activeUsers);
+    // Client should call this once after it knows the userId
+    socket.on("new-user-add", (userId) => {
+      if (!userId) return;
+      socket.data.userId = userId;
+
+      // Join a room named by the userId so ALL that user's sockets get messages
+      socket.join(userId);
+
+      // Maintain online counts
+      const prev = onlineCounts.get(userId) || 0;
+      onlineCounts.set(userId, prev + 1);
+
+      console.log("👥 Online counts:", Object.fromEntries(onlineCounts));
+      broadcastOnlineUsers();
     });
 
-    // Event: User joins a community group (room)
+    // One-to-one message: deliver to receiver's room (all their sockets)
+    socket.on("send-message", (data) => {
+      // expected: { chatId, senderId, receiverId, text, createdAt? }
+      if (!data || !data.receiverId) return;
+      const payload = {
+        ...data,
+        createdAt: data.createdAt || new Date(),
+      };
+
+      // Send to receiver (all their devices/tabs)
+      io.to(data.receiverId).emit("receive-message", payload);
+
+      // Echo back to sender's current socket so they also "receive" it via the same path
+      socket.emit("receive-message", payload);
+
+      // (Optional) If you want ALL of sender's sockets to get it too:
+      // io.to(data.senderId).emit("receive-message", payload);
+    });
+
+    // Join/emit for community groups (rooms)
     socket.on("joinCommunityGroup", ({ communityId }) => {
-      socket.join(communityId); // Join the room for group chat
-      console.log(`User ${socket.id} joined community ${communityId}`);
+      if (!communityId) return;
+      socket.join(communityId);
+      console.log(`🏘️ ${socket.id} joined community room ${communityId}`);
     });
 
-    // Event: Send a message (group chat)
     socket.on("sendGroupMessage", (messageData) => {
-      const { communityId, senderId, text } = messageData;
-      // Broadcast the message to all users in the room (community group)
-      io.to(communityId).emit("receiveGroupMessage", {
+      // expected: { communityId, senderId, text }
+      const { communityId, senderId, text } = messageData || {};
+      if (!communityId || !senderId || !text) return;
+
+      const payload = {
+        communityId,
         senderId,
         text,
         createdAt: new Date(),
-      });
+      };
+
+      io.to(communityId).emit("receiveGroupMessage", payload);
     });
 
-    // Event: Send a message (one-to-one chat)
-    socket.on("send-message", (data) => {
-      const { receiverId } = data;
-      const user = activeUsers.find((user) => user.userId === receiverId);
-      if (user) {
-        io.to(user.socketId).emit("receive-message", data);
-      }
-    });
-
-    // Event: Disconnect
+    // Cleanup on disconnect
     socket.on("disconnect", () => {
-      activeUsers = activeUsers.filter((user) => user.socketId !== socket.id);
-      console.log(`User disconnected: ${socket.id}`);
-      io.emit("get-users", activeUsers);
+      const userId = socket.data.userId;
+      if (userId) {
+        const prev = onlineCounts.get(userId) || 1;
+        const next = prev - 1;
+        if (next <= 0) onlineCounts.delete(userId);
+        else onlineCounts.set(userId, next);
+      }
+      console.log(`❌ Socket disconnected: ${socket.id}`);
+      broadcastOnlineUsers();
     });
   });
+
+  return io; // <-- important so server can attach req.io
 }
 
 module.exports = initializeSocket;

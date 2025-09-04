@@ -16,12 +16,12 @@ function PostForm() {
         const response = await axios.get('http://localhost:3000/api/auth/posts'); // Adjust URL
         setUser(response.data);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching user data:", error,user);
       }
     };
 
     fetchUser();
-  }, []);
+  }, [user]);
 
   const handleAddPostClick = () => {
     setShowForm(true);
@@ -31,7 +31,7 @@ function PostForm() {
     const title = e.target.title.value;
     const description = e.target.description.value;
 
-    console.log({ title, description }); // Ensure no 'id' field is being sent
+    // console.log({ title, description }); // Ensure no 'id' field is being sent
 
     try {
       const response = await axios.post(
@@ -68,7 +68,7 @@ function PostForm() {
   }, []);
 
   const location = useLocation()
-  if (params.communityId || location.pathname === '/otp' || location.pathname === '/' || location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/profile'|| location.pathname === '/premium'||  location.pathname === '/chat'||location.pathname === '/community'||location.pathname === '/community/create'||location.pathname === 'community/:communityId') return
+  if (params.communityId || location.pathname === '/otp' || location.pathname === '/' || location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/profile'|| location.pathname === '/chat'||location.pathname === '/community'||location.pathname === '/community/create'||location.pathname === 'community/:communityId'|| location.pathname === '/dashboard'||location.pathname === '/search') return
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">

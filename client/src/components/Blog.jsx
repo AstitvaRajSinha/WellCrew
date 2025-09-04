@@ -4,12 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Blog = ({ post, currentUser }) => {
   const [userData, setUserData] = useState(null);
-  const [chatExists, setChatExists] = useState(false); // Track if the chat exists
-  const [chatId, setChatId] = useState(null); // Store the existing chat ID if chat exists
+  const [chatExists, setChatExists] = useState(false); 
+  const [chatId, setChatId] = useState(null); 
   const [avatar, setAvatar] = useState("https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg");
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate(); 
 
-  // Fetch user data (the author of the post)
   const fetchUserData = async () => {
     try {
       const userId = post?.name?._id;
@@ -25,25 +24,23 @@ const Blog = ({ post, currentUser }) => {
     }
   };
 
-  // Check if a chat already exists between current user and the post's author
   const checkChatExists = async () => {
     try {
       const response = await axios.post('http://localhost:3000/chat/check', {
-        members: [currentUser._id, post.name._id], // Pass both users' IDs
+        members: [currentUser._id, post.name._id], 
       });
 
       if (response.data.chatExists) {
-        setChatExists(true); // Set state if chat exists
-        setChatId(response.data.chatId); // Save the chat ID
+        setChatExists(true); 
+        setChatId(response.data.chatId); 
       } else {
-        setChatExists(false); // If no chat exists, allow creating one
+        setChatExists(false); 
       }
     } catch (error) {
       console.error("Error checking if chat exists:", error);
     }
   };
 
-  // Create a new chat if one doesn't exist
   const createChat = async () => {
     try {
       const response = await axios.post('http://localhost:3000/chat/', {
@@ -51,7 +48,7 @@ const Blog = ({ post, currentUser }) => {
       });
 
       if (response.data.success) {
-        navigate(`/chat`); // Navigate to the new chat
+        navigate(`/chat`); 
       } else {
         alert("Failed to create chat.");
       }
@@ -62,9 +59,9 @@ const Blog = ({ post, currentUser }) => {
   };
 
   useEffect(() => {
-    fetchUserData(); // Fetch user data of the post's author
+    fetchUserData(); 
     if (currentUser && post?.name?._id) {
-      checkChatExists(); // Check if a chat already exists when the component loads
+      checkChatExists(); 
     }
   }, [post, currentUser]);
 
@@ -73,10 +70,8 @@ const Blog = ({ post, currentUser }) => {
   const handleChatClick = async () => {
     if (currentUser?._id && post?.name?._id && currentUser._id !== post.name._id) {
       if (chatExists) {
-        // If chat exists, navigate to that chat
         navigate(`/chat`);
       } else {
-        // If chat doesn't exist, create a new one
         await createChat();
       }
     } else {

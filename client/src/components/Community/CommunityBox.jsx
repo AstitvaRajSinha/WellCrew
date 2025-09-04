@@ -56,7 +56,7 @@ const navigate = useNavigate();
             <div className="text-left p-4">
               <h2 className="text-lg font-bold">{community.name}</h2>
               <p className="py-5">{community.description}</p>
-              <p>{community._id}</p>
+              {/* <p>{community._id}</p> */}
               <h2 className="text-[13px] text-black font-bold">{community.category}</h2>
             </div>
           </div>

@@ -8,7 +8,6 @@ const UserProfile = () => {
     const [email, setEmail] = useState([]);
     const [name, setName] = useState([]);
     const [role, setRole] = useState([]); 
-    const [userId, setUserId] = useState('');
     const [avatarLink, setAvatarLink]= useState("https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg");
     const fetchUserData = async () => {
         try {
@@ -16,13 +15,12 @@ const UserProfile = () => {
                 withCredentials: true 
             });
             
-            console.log('API response:', response.data); // Debugging: log the full response
+            // console.log('API response:', response.data); // Debugging: log the full response
             if (response.data && response.data.user.email) {
                 await setEmail(response.data.user.email);
                 await setName(response.data.user.name);
                 await setRole(response.data.user.role);
                 await setAvatarLink(response.data.user.image);
-                await setUserId(response.data.user._id);
             } else {
                 console.error('Error fetching user data:', response.data.message);
             }

@@ -18,13 +18,12 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['Visitor', 'Mental', 'Yoga','Sports'],
+        enum: ['Visitor', 'Mental', 'Yoga', 'Sports','Fitness'],
         default: 'Visitor', // Set a default role
     },
-    image : {
-        type: String,
+    image: {
+        type: String
     }
-    
 });
 
 module.exports = mongoose.model('User', userSchema);
