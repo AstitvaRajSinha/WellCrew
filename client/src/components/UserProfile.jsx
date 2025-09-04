@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import MyPost from "./Mypost/MyPost";
 import axios from "axios";
 import bg from '../Assets/stars.png'
+import Cookies from 'js-cookie';
 import { Link } from "react-router-dom";
 
 const UserProfile = () => {
@@ -9,10 +10,20 @@ const UserProfile = () => {
     const [name, setName] = useState([]);
     const [role, setRole] = useState([]); 
     const [avatarLink, setAvatarLink]= useState("https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg");
+    const token = Cookies.get("token"); 
+    
+const config = {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+};
     const fetchUserData = async () => {
         try {
             const response = await axios.get('https://wellcrew.onrender.com/api/auth/profile', {
-                withCredentials: true 
+                withCredentials: true ,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
             
             // console.log('API response:', response.data); // Debugging: log the full response
