@@ -42,8 +42,8 @@ function Otp() {
             } else {
                 setMessage("Error sending OTP");
             }
-            setLoading(false);
             console.error(error);
+            setLoading(false);
         }
     };
 
