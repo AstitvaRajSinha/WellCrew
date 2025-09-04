@@ -41,8 +41,15 @@ exports.signup = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        const hex = Math.floor(Math.random() * 16777215).toString(16);
+const colors = [
+  "6F00FF", // Electric Indigo
+  "8A2BE2", // Violet
+  "9400FF", // Ultraviolet
+  "7B68EE", // Neon Violet Blue
+  "483DFF", // Deep Blue Purple
+  "5A00E0"  // Custom purple-blue
+];
+const hex = colors[Math.floor(Math.random() * colors.length)];
         const image = `https://ui-avatars.com/api/?background=${hex}&color=fff&name=${name}`;
 
         const newUser = await User.create({
