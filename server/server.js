@@ -6,7 +6,7 @@ const compression = require("compression");
 const bodyParser = require("body-parser");
 const http = require("http");
 const path = require("path");
-const initializeSocket = require("../socket/index");
+const initializeSocket = require("./socket");
 
 const app = express();
 const server = http.createServer(app);
