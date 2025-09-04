@@ -40,7 +40,7 @@ function Otp() {
             if (error.response && error.response.data && error.response.data.message) {
                 setMessage(error.response.data.message);
             } else {
-                setMessage("Error sending OTP");
+                setMessage("Error sending OTP again");
             }
             console.error(error);
             setLoading(false);
