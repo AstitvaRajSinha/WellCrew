@@ -108,7 +108,8 @@ exports.login = async (req, res) => {
                 success: true,
                 User: user,
                 message: "Logged in successfully",
-                samesite: 'none'
+                secure : true,
+                sameSite: 'none',
             });
 
         } else {
@@ -189,7 +190,7 @@ exports.logout = (req, res) => {
     res.cookie('jwtToken', '', {
         httpOnly: true,
         expires: new Date(Date.now() - 1),
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         sameSite: 'none',
     });
     res.status(200).json({ success: true, message: 'Logged out successfully' });

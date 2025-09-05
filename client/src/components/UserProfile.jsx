@@ -21,9 +21,7 @@ const config = {
         try {
             const response = await axios.get('https://wellcrew.onrender.com/api/auth/profile', {
                 withCredentials: true ,
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                
             });
             
             // console.log('API response:', response.data); // Debugging: log the full response

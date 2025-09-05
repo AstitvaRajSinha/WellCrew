@@ -38,7 +38,7 @@ function Signup() {
 
         try {
             setLoading(true);
-            const response = await axios.post('https://wellcrew.onrender.com/api/auth/signup', { name, email, password, role, otp });
+            const response = await axios.post('https://wellcrew.onrender.com/api/auth/signup', { name, email, password, role, otp }, { withCredentials: true });
             setMessage(response.data.message);
             setTimeout(() => {
                 setLoading(false);

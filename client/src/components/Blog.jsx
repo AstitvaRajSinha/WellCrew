@@ -27,8 +27,8 @@ const Blog = ({ post, currentUser }) => {
   const checkChatExists = async () => {
     try {
       const response = await axios.post('https://wellcrew.onrender.com/chat/check', {
-        members: [currentUser._id, post.name._id], 
-      });
+        members: [currentUser._id, post.name._id]
+      }, { withCredentials: true });
 
       if (response.data.chatExists) {
         setChatExists(true); 
@@ -45,7 +45,9 @@ const Blog = ({ post, currentUser }) => {
     try {
       const response = await axios.post('https://wellcrew.onrender.com/chat/', {
         members: [currentUser._id, post.name._id],
-      });
+       
+      }, 
+      { withCredentials: true });
 
       if (response.data.success) {
         navigate(`/chat`); 

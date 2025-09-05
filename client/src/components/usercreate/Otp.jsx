@@ -26,12 +26,12 @@ function Otp() {
         }
         try {
             setLoading(true);
-            const response = await axios.post('https://wellcrew.onrender.com/api/auth/sendotp', { email });
+            const response = await axios.post('https://wellcrew.onrender.com/api/auth/sendotp', { email }, { withCredentials: true });
             setMessage(response.data.message);
             if (response.data.success) {
                 setTimeout(() => {
                     setLoading(false);
-                    navigate('/signup', { state: { email } }); // Pass email as state
+                    navigate('/signup', { state: { email } }); 
                 }, 1000);
             } else {
                 setLoading(false);

@@ -22,7 +22,7 @@ const TotalPost = () => {
     const fetchPosts = async () => {
       setLoading(true); 
       try {
-        const response = await axios.get('https://wellcrew.onrender.com/api/auth/posts');
+        const response = await axios.get('https://wellcrew.onrender.com/api/auth/posts', { withCredentials: true });
         // console.log('Response Data:', response.data); 
         if (response.data.success) {
           setPosts(response.data.data); 

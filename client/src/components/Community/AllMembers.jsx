@@ -11,7 +11,9 @@ const AllMembers = () => {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await axios.get(`https://wellcrew.onrender.com/community/${communityId}/members`);
+        const response = await axios.get(`https://wellcrew.onrender.com/community/${communityId}/members`, {
+          withCredentials: true,
+        });
         // console.log('API response:', response.data);
         setMembers(response.data.community.members);
         // console.log('Members data fetched:', response.data.community);

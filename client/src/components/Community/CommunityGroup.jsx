@@ -33,7 +33,7 @@ const CommunityGroup = () => {
       try {
         socket.emit('joinCommunityGroup', { communityId });
         const userResponse = await axios.get(`https://wellcrew.onrender.com/auth/profile`, { withCredentials: true });
-        const groupResponse = await axios.get(`https://wellcrew.onrender.com/community/${communityId}/group`);
+        const groupResponse = await axios.get(`https://wellcrew.onrender.com/community/${communityId}/group`, { withCredentials: true });
         setUser(userResponse.data.user);
         const allMessages = groupResponse.data.data || [];
         const enrichedMessages = await Promise.all(allMessages.map(async (msg) => ({ ...msg, senderName: await fetchUserData(msg.senderId) })));
@@ -79,7 +79,7 @@ const handleSendMessage = async () => {
 
     await axios.post(
       `https://wellcrew.onrender.com/community/${communityId}/group`,
-      messageData
+      messageData, { withCredentials: true }
     );
 
     socket.emit("sendGroupMessage", messageData);
@@ -100,7 +100,7 @@ const handleSendMessage = async () => {
   useEffect(() => {
     const fetchCommunityName = async () => {
       try {
-        const response = await axios.post(`https://wellcrew.onrender.com/community/${communityId}`, { communityId });
+        const response = await axios.post(`https://wellcrew.onrender.com/community/${communityId}`, { communityId } , { withCredentials: true });
         setCommunityName(response.data.data.name);
       } catch (error) {
         console.error('Error fetching community name:', error);

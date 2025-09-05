@@ -52,7 +52,7 @@ const CreateCommunity = () => {
         description,
         category,
         userId: user._id,
-      });
+      } , { withCredentials: true });
       // console.log(response.data);
       alert(response.data.message);
       navigate('/community');

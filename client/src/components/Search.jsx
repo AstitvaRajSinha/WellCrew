@@ -14,7 +14,7 @@ const Search = () => {
         setError('');
 
         try {
-            const response = await axios.get(`https://wellcrew.onrender.com/api/auth/search?query=${query}`);
+            const response = await axios.get(`https://wellcrew.onrender.com/api/auth/search?query=${query}`, { withCredentials: true });
             setUsers(response.data);
         } catch (err) {
             if (err.response && err.response.status === 404) {

@@ -13,7 +13,9 @@ function PostForm() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get('https://wellcrew.onrender.com/api/auth/posts'); // Adjust URL
+        const response = await axios.get('https://wellcrew.onrender.com/api/auth/posts' 
+        , { withCredentials: true }
+         ); // Adjust URL
         setUser(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error,user);
