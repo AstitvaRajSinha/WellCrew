@@ -4,7 +4,7 @@ const { Server } = require("socket.io");
 function initializeSocket(server) {
   const io = new Server(server, {
     cors: {
-      origin: "https://well-crew.vercel.app", // your React client
+      origin: "https://well-crew.vercel.app" || "http://localhost:3001", // your React client
       credentials: true,
       methods: ["GET", "POST"],
     },

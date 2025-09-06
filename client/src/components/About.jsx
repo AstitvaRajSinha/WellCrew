@@ -6,12 +6,12 @@ function About() {
       <div className="max-w-7xl mx-auto flex flex-col items-center gap-8">
         {/* Title */}
         <h2 className="text-green font-extrabold text-4xl md:text-6xl text-center">
-          About Connectify
+          About WellCrew
         </h2>
 
         {/* Subtitle */}
         <p className="text-lg text-gray-300 text-center max-w-3xl leading-relaxed">
-          Connectify is your trusted platform for building meaningful
+          WellCrew is your trusted platform for building meaningful
           connections with health and wellness experts. From fitness coaches to
           mental health professionals, we bring communities together to foster
           collaboration and growth.

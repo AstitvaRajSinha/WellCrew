@@ -1,7 +1,7 @@
 import React from "react";
 import {useNavigate } from "react-router-dom";
 import logo1 from "../Assets/logo-no-background.png";
-import main2 from "../Assets/main2.png";
+import main2 from "../Assets/main3.png";
 import About from "./About";
 import Footer from "./Footer";
 
@@ -49,12 +49,12 @@ function Home() {
               </p>
               <div className=" flex justify-center md:justify-start py-10 space-x-5">
                 <button onClick={handlelogin} className="relative overflow-hidden h-12 px-8 rounded-md border-2 border-green bg-green text-gray-200  cursor-pointer group">
-                  <span className="relative z-10">Home</span>
+                  <span className="relative z-10">Log In</span>
                   <span className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-black to-black scale-x-0 group-hover:scale-x-100 transition-transform duration-[300ms] ease-in-out origin-right rounded-md"></span>
                 </button>
                 <button onClick={handlesignup} className="relative overflow-hidden h-12 px-8 rounded-md border-2  border-green text-gray-200   cursor-pointer group">
                   <span className="relative z-10">Sign Up</span>
-                  <span className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#6C63FF] to-[#6F00FF] scale-x-0 group-hover:scale-x-100 transition-transform duration-[300ms] ease-in-out origin-left rounded-md"></span>
+                  <span className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#6F00FF] to-[#6F00FF] scale-x-0 group-hover:scale-x-100 transition-transform duration-[300ms] ease-in-out origin-left rounded-md"></span>
                 </button>
               </div>
             </div>
@@ -65,7 +65,7 @@ function Home() {
               <img
                 src={main2}
                 alt="Main Visual"
-                className="relative z-10 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-500"
+                className="relative  z-10 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-500"
               />
             </div>
           </div>

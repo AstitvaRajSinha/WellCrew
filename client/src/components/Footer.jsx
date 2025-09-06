@@ -6,7 +6,7 @@ function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-16 flex flex-col md:flex-row justify-between items-center gap-8">
         {/* Left Section: Logo and Description */}
         <div className="text-center md:text-left space-y-4">
-          <h2 className="text-green font-bold text-2xl">Connectify</h2>
+          <h2 className="text-green font-bold text-2xl">WellCrew</h2>
           <p className="text-gray-400 max-w-sm">
             Your trusted platform for connecting with health and wellness
             experts. Building communities for a healthier future.
@@ -86,7 +86,7 @@ function Footer() {
 
       {/* Bottom Section */}
       <div className="text-center text-gray-400 text-sm mt-10 border-t border-gray-800 pt-5">
-        © {new Date().getFullYear()} Connectify. All Rights Reserved.
+        © {new Date().getFullYear()} WellCrew. All Rights Reserved.
       </div>
     </footer>
   );

@@ -29,7 +29,7 @@ app.use(compression());
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "https://well-crew.vercel.app",
+    origin: process.env.CLIENT_URL || "https://well-crew.vercel.app" || "http://localhost:3001",
     credentials: true,
   })
 );
